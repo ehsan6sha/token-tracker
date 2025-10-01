@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AnalysisResult, TraceNode } from '../types';
 import { formatDistanceToNow } from 'date-fns';
-import { ChevronDown, ChevronRight, ExternalLink, TrendingDown, TrendingUp, Users, Target, Map } from 'lucide-react';
+import { ChevronDown, ChevronRight, ExternalLink, TrendingDown, TrendingUp, Map } from 'lucide-react';
 import TraceBubbleMap from './TraceBubbleMap';
 
 interface Props {
@@ -93,41 +93,6 @@ export default function ResultsView({ result, network = 'base-mainnet' }: Props)
 
   return (
     <div className="space-y-6">
-      {/* Statistics */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-4 border border-slate-700">
-          <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="text-green-400" size={20} />
-            <span className="text-slate-400 text-sm">Total Buys</span>
-          </div>
-          <p className="text-2xl font-bold text-white">{result.statistics.totalBuys}</p>
-        </div>
-
-        <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-4 border border-slate-700">
-          <div className="flex items-center gap-2 mb-2">
-            <TrendingDown className="text-red-400" size={20} />
-            <span className="text-slate-400 text-sm">Total Sells</span>
-          </div>
-          <p className="text-2xl font-bold text-white">{result.statistics.totalSells}</p>
-        </div>
-
-        <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-4 border border-slate-700">
-          <div className="flex items-center gap-2 mb-2">
-            <Users className="text-blue-400" size={20} />
-            <span className="text-slate-400 text-sm">Unique Wallets</span>
-          </div>
-          <p className="text-2xl font-bold text-white">{result.statistics.uniqueWallets}</p>
-        </div>
-
-        <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg p-4 border border-slate-700">
-          <div className="flex items-center gap-2 mb-2">
-            <Target className="text-purple-400" size={20} />
-            <span className="text-slate-400 text-sm">Traced to Origin</span>
-          </div>
-          <p className="text-2xl font-bold text-white">{result.statistics.tracedToOrigin}</p>
-        </div>
-      </div>
-
       {/* Transactions List */}
       <div className="bg-slate-800/50 backdrop-blur-sm rounded-lg border border-slate-700">
         <div className="p-4 border-b border-slate-700">
@@ -219,9 +184,9 @@ export default function ResultsView({ result, network = 'base-mainnet' }: Props)
             ) : (
               <div className="space-y-4">
                 {result.traces.map((trace, index) => (
-                  <div key={index}>
+                  <div key={`${trace.transaction}-${index}`}>
                     <h4 className="text-white font-medium mb-2">Trace #{index + 1} - {formatAddress(trace.address, trace.label)}</h4>
-                    <TraceBubbleMap trace={trace} network={network} />
+                    <TraceBubbleMap key={`map-${trace.transaction}-${index}`} trace={trace} network={network} />
                   </div>
                 ))}
               </div>
