@@ -48,7 +48,7 @@ export interface AnalysisResult {
   tokenAddress: string;
   startTime: number;
   endTime: number;
-  transactions: Transaction[];
+  transactions: DexTransaction[];
   traces: TraceNode[];
   statistics: {
     totalBuys: number;
